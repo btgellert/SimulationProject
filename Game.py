@@ -1,3 +1,4 @@
+import random
 from pygame import Vector2
 from Ball import Ball
 from Ring import Ring
@@ -14,7 +15,8 @@ BALL_SIZE = 3
 class Game:
     def __init__(self):
         # Start with one ball
-        self.balls = [Ball(Vector2(utils.width/2,utils.height/2),BALL_SIZE,(255,255,255))]
+        ballPosition = Vector2(utils.width/2,utils.height/2)
+        self.balls = [Ball(self.offsetBallPos(ballPosition),BALL_SIZE,(255,255,255))]
         self.rings = [
             Ring(Vector2(utils.width / 2, utils.height / 2), 50, -1, 360, rotationSpeed=1.1),
             Ring(Vector2(utils.width / 2, utils.height / 2), 30, -1, 360, rotationSpeed=1.0),
@@ -47,7 +49,7 @@ class Game:
         if utils.contactListener:
             for bodyA,bodyB in utils.contactListener.collisions:
                 # Record sound event with simulation time
-                #sounds.play(current_time=self.simulation_time)
+                sounds.play(current_time=self.simulation_time, sound_effect="assets/rizz_sound_effect.wav")
                 break
             utils.contactListener.collisions = []
         
@@ -68,7 +70,7 @@ class Game:
             if ball in self.balls_inside_ring:
                 # Check if ball has fallen completely off the bottom of the screen
                 if ball_pos.y > utils.height:
-                    sounds.play(current_time=self.simulation_time)
+                    sounds.play(current_time=self.simulation_time, sound_effect="assets/meow.wav")
                     self.balls_spawned.add(ball)
                     self.balls_inside_ring.discard(ball)
                     self.spawn_two_balls()
@@ -89,3 +91,8 @@ class Game:
             ring.draw(surface)
         for ball in self.balls:
             ball.draw(surface)
+    
+    def offsetBallPos(self, pos:Vector2):
+        yOffset = random.uniform(-1,1)
+        pos.y = pos.y + yOffset
+        return pos
