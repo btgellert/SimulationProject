@@ -10,7 +10,13 @@ class Sounds:
         mixer.music.set_volume(0.0)
 
         self.sound_files = [
-            "assets/meow.wav"
+            "assets/meow.wav",
+            "assets/rizz_sound_effect.wav"
+        ]
+        
+        self.loop_sound_files = [
+            "assets/Untitled.wav",
+            "assets/Untitled (1).wav"
         ]
         
         # Pre-load audio data from WAV files
@@ -25,26 +31,51 @@ class Sounds:
                     file_sample_rate = wav.getframerate()
                     channels = wav.getnchannels()
                     print(f"Loaded {sound_file}: {n_frames} frames, {file_sample_rate}Hz, {channels} channels, {len(audio_array)} samples")
-                    self.sound_data.append((audio_array, file_sample_rate, channels))
+                    self.sound_data.append((audio_array, file_sample_rate, channels, sound_file))
             except Exception as e:
                 print(f"Error loading {sound_file}: {e}")
                 # Create silent audio as fallback
-                self.sound_data.append((np.zeros(sample_rate * 2, dtype=np.int16), sample_rate, 2))
+                self.sound_data.append((np.zeros(sample_rate * 2, dtype=np.int16), sample_rate, 2, sound_file))
         
         self.i = 0
+        
+        self.loop_sound_data = []
+        for sound_file in self.loop_sound_files:
+            try:
+                with wave.open(sound_file, 'rb') as wav:
+                    n_frames = wav.getnframes()
+                    frames = wav.readframes(n_frames)
+                    # Convert to numpy array
+                    audio_array = np.frombuffer(frames, dtype=np.int16)
+                    file_sample_rate = wav.getframerate()
+                    channels = wav.getnchannels()
+                    print(f"Loaded {sound_file}: {n_frames} frames, {file_sample_rate}Hz, {channels} channels, {len(audio_array)} samples")
+                    self.loop_sound_data.append((audio_array, file_sample_rate, channels))
+            except Exception as e:
+                print(f"Error loading {sound_file}: {e}")
+                # Create silent audio as fallback
+                self.loop_sound_data.append((np.zeros(sample_rate * 2, dtype=np.int16), sample_rate, 2))
+        
         
         # Recording setup
         self.output_file = output_file
         self.sample_rate = sample_rate
         self.recorded_events = []  # List of (time_offset, audio_data, sample_rate, channels) tuples
         
-    def play(self, current_time=None):
+    def play(self, current_time=None, sound_effect=None):
         if not self.sound_data:
             print("Warning: No sound data loaded")
             return
         
+        sound_to_play = None
+        if sound_effect:
+            self.sound_data
+            sound_to_play = [s for s in self.sound_data if sound_effect in s[3]][0]
+        else:
+            sound_to_play = self.loop_sound_data[self.i]
+            
         # Get the sound data to record
-        audio_array, file_sample_rate, channels = self.sound_data[self.i]
+        audio_array, file_sample_rate, channels, *_ = sound_to_play
         sound_index = self.i
         self.i += 1
         if self.i >= len(self.sound_data):
