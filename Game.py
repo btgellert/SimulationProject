@@ -18,8 +18,12 @@ class Game:
         ballPosition = Vector2(utils.width/2,utils.height/2)
         self.balls = [Ball(self.offsetBallPos(ballPosition),BALL_SIZE,(255,255,255))]
         self.rings = [
-            Ring(Vector2(utils.width / 2, utils.height / 2), 50, -1, 360, rotationSpeed=1.1),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 26, -1, 360, rotationSpeed=1.1),
             Ring(Vector2(utils.width / 2, utils.height / 2), 30, -1, 360, rotationSpeed=1.0),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 34, -1, 360, rotationSpeed=0.9),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 38, -1, 360, rotationSpeed=0.8),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 42, -1, 360, rotationSpeed=0.7),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 46, -1, 360, rotationSpeed=0.6),
         ]
         
         self.balls_inside_ring = set()
@@ -53,8 +57,22 @@ class Game:
                 break
             utils.contactListener.collisions = []
         
-        self.check_ball_fall_through()
-
+        self.check_ring_exit()
+        
+    def check_ring_exit(self):
+        for ring in self.rings[:]:
+            for ball in self.balls[:]:
+                ball_position = ball.getPos()
+                distance = ball_position.distance_to(self.ring_center)
+                if distance > ring.radius * 10:
+                    sounds.play(current_time=self.simulation_time, sound_effect="meow.wav")
+                    if ring in self.rings:
+                        utils.world.DestroyBody(ring.body)
+                        self.rings.remove(ring)
+                    
+                
+        return
+    
     def check_ball_fall_through(self):
         for ball in self.balls[:]:  # Use slice to avoid modification during iteration
             if ball in self.balls_spawned:
@@ -93,6 +111,6 @@ class Game:
             ball.draw(surface)
     
     def offsetBallPos(self, pos:Vector2):
-        yOffset = random.uniform(-1,1)
+        yOffset = random.uniform(-5,5)
         pos.y = pos.y + yOffset
         return pos

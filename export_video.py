@@ -14,7 +14,7 @@ os.environ["SDL_VIDEODRIVER"] = "dummy"
 FPS = 60
 SIMULATION_SPEED = 4.0  # 1.0 = normal speed
 DT = SIMULATION_SPEED / FPS
-DURATION_SECONDS = 10
+DURATION_SECONDS = 30
 TOTAL_FRAMES = FPS * DURATION_SECONDS
 WIDTH, HEIGHT = 1080, 1920
 
@@ -37,7 +37,13 @@ if os.path.exists("collision_sounds.wav"):
 
 print(f"Rendering {TOTAL_FRAMES} frames at {FPS} FPS ({DURATION_SECONDS}s)...")
 
+wait_time = 0
 for i in range(TOTAL_FRAMES):
+    if len(game.rings) == 0:
+        wait_time += 1
+        if wait_time >= FPS * 2: # 2 seconds after finish
+            break
+    
     video_time = i / FPS  # Time in video timeline
     
     game.update()
@@ -66,7 +72,7 @@ sounds.save_recording(duration_seconds=DURATION_SECONDS)
 # Create final video
 print("Creating final video...")
 subprocess.run(
-    f"ffmpeg -framerate {FPS} -i frames/frame_%05d.png -i collision_sounds.wav -c:v libx264 -pix_fmt yuv420p -c:a aac output.mp4 -y",
+    f"ffmpeg -framerate {FPS} -i frames/frame_%05d.png -i collision_sounds.wav -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest output.mp4 -y",
     shell=True
 )
 
