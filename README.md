@@ -2,10 +2,6 @@
 
 A physics-based ball simulation featuring dynamic collision detection, synchronized audio synthesis, and automated video generation. Built with Pygame and Box2D.
 
-## Demo
-
-<video src="https://raw.githubusercontent.com/btgellert/SimulationProject/main/output.mp4" width="320" height="568" controls></video>
-
 ## Overview
 
 This project simulates balls bouncing within a series of rotating concentric rings. When a ball passes through a ring's opening, it triggers a chain reaction—spawning new balls and creating an emergent, visually captivating physics display. The simulation includes procedurally generated audio that synchronizes with collision events and exports to high-quality video.
