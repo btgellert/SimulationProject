@@ -14,7 +14,7 @@ os.environ["SDL_VIDEODRIVER"] = "dummy"
 FPS = 60
 SIMULATION_SPEED = 4.0  # 1.0 = normal speed
 DT = SIMULATION_SPEED / FPS
-DURATION_SECONDS = 30
+DURATION_SECONDS = 120
 TOTAL_FRAMES = FPS * DURATION_SECONDS
 WIDTH, HEIGHT = 1080, 1920
 
@@ -38,7 +38,9 @@ if os.path.exists("collision_sounds.wav"):
 print(f"Rendering {TOTAL_FRAMES} frames at {FPS} FPS ({DURATION_SECONDS}s)...")
 
 wait_time = 0
-for i in range(TOTAL_FRAMES):
+i = 0
+#for i in range(TOTAL_FRAMES):
+while True:
     if len(game.rings) == 0:
         wait_time += 1
         if wait_time >= FPS * 2: # 2 seconds after finish
@@ -64,6 +66,7 @@ for i in range(TOTAL_FRAMES):
     
     if (i + 1) % (FPS * 2) == 0:  # Print every 2 seconds
         print(f"Progress: {i + 1}/{TOTAL_FRAMES} frames ({(i + 1) / FPS:.1f}s)")
+    i += 1
 
 # Save collision sounds to file
 print("Saving collision sounds...")
