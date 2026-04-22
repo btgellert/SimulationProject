@@ -4,7 +4,7 @@ A physics-based ball simulation featuring dynamic collision detection, synchroni
 
 ## Demo
 
-<video src="output.mp4" width="320" height="568" controls></video>
+<video src="https://raw.githubusercontent.com/btgellert/SimulationProject/main/output.mp4" width="320" height="568" controls></video>
 
 ## Overview
 
