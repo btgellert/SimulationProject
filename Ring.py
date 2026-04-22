@@ -6,13 +6,15 @@ from pygame import Vector2
 from utils import utils
 
 class Ring:
-    def __init__(self, pos, radius, rotateDir, size, rotationSpeed=1.0):
+    def __init__(self, pos, radius, rotateDir, size, openingSize, statAngle, rotationSpeed=1.0):
         self.color = (255,255,255)
         self.radius = radius
 
         self.rotateDir = rotateDir
         self.rotationSpeed = rotationSpeed
         self.size = size
+        self.openingSize = openingSize
+        self.statAngle = statAngle
         self.vertices = []
         for i in range(self.size):
             angle = i * (2 * math.pi / self.size)
@@ -22,6 +24,7 @@ class Ring:
 
         self.body = utils.world.CreateStaticBody(position=utils.from_Pos(pos))
         self.body.userData = self
+        self.body.angle = self.statAngle
 
         self.create_edge_shape()
         self.hue = random.uniform(0,1)
@@ -31,7 +34,7 @@ class Ring:
         if self.size == 360:
             for i in range(self.size):
                 angle = i * (360 / self.size)
-                if (0 <= angle <= 280) :
+                if (0 <= angle <= self.size - self.openingSize):
                     v1 = self.vertices[i]
                     v2 = self.vertices[(i + 1) % self.size]
                     edge = b2EdgeShape(vertices=[v1, v2])
