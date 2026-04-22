@@ -18,12 +18,12 @@ class Game:
         ballPosition = Vector2(utils.width/2,utils.height/2)
         self.balls = [Ball(self.offsetBallPos(ballPosition),BALL_SIZE,(255,255,255))]
         self.rings = [
-            Ring(Vector2(utils.width / 2, utils.height / 2), 26, -1, 360, rotationSpeed=1.1),
-            Ring(Vector2(utils.width / 2, utils.height / 2), 30, -1, 360, rotationSpeed=1.0),
-            Ring(Vector2(utils.width / 2, utils.height / 2), 34, -1, 360, rotationSpeed=0.9),
-            Ring(Vector2(utils.width / 2, utils.height / 2), 38, -1, 360, rotationSpeed=0.8),
-            Ring(Vector2(utils.width / 2, utils.height / 2), 42, -1, 360, rotationSpeed=0.7),
-            Ring(Vector2(utils.width / 2, utils.height / 2), 46, -1, 360, rotationSpeed=0.6),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 26, -1, 360, 60, 0.08, rotationSpeed=1.1),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 30, -1, 360, 60, 0.16, rotationSpeed=1.0),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 34, -1, 360, 60, 0.24, rotationSpeed=0.9),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 38, -1, 360, 60, 0.32, rotationSpeed=0.8),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 42, -1, 360, 60, 0.40, rotationSpeed=0.7),
+            Ring(Vector2(utils.width / 2, utils.height / 2), 46, -1, 360, 60, 0.48, rotationSpeed=0.6),
         ]
         
         self.balls_inside_ring = set()
